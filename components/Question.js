@@ -1,9 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Text, StyleSheet  } from 'react-native';
 import { Layout } from 'react-native-ui-kitten';
-import { Label } from './Label'
+import Label from './Label'
 
-const Question = ({ question }) => {
+export default function Question({ question }) {
+  console.log("Q:", question)
   return (
     <Layout>
       <Label>
@@ -16,10 +17,9 @@ const Question = ({ question }) => {
   );
 }
 
-export default Question;
-
 const styles = StyleSheet.create({
   question: {
     fontSize: 45
   }
 });
+

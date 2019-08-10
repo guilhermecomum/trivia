@@ -1,7 +1,8 @@
+import React from 'react';
 import { Text, StyleSheet  } from 'react-native';
 import { Layout } from 'react-native-ui-kitten';
 
-const Loading = () => {
+export default function Loading() {
   return (
     <Layout style={styles.loading}>
       <Text style={styles.text}>
@@ -10,8 +11,6 @@ const Loading = () => {
     </Layout>
   );
 }
-
-export default Loading;
 
 const styles = StyleSheet.create({
   loading: {

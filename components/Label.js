@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Text, StyleSheet  } from 'react-native';
 
 export default function Label({children}) {

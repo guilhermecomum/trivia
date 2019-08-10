@@ -3,15 +3,16 @@ import { mapping, light as lightTheme } from '@eva-design/eva';
 import { ApplicationProvider, Layout, Button } from 'react-native-ui-kitten';
 import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { List } from './questions.js';
-import { Loading } from './components/Loading';
-import { Question } from './components/Loading';
-import { Answer } from './components/Answer';
+import Loading from './components/Loading';
+import Question from './components/Question';
+import Answer from './components/Answer';
+import Category from './components/Category';
 
 export default class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      isLoading: true,
+      isLoading: false,
       fontsAreLoaded: false,
       trivia: List[1],
       showQuestion: true
@@ -20,15 +21,14 @@ export default class App extends Component {
 
   randomQuestion = async () => {
     this.setState({ isLoading: true, showQuestion: true, });
-    await fetch('http://httpstat.us/500')
-    //await fetch('http://jservice.io/api/random')
+    //await fetch('http://httpstat.us/500')
+    await fetch('http://jservice.io/api/random')
       .then((response) => response.json())
       .then((result) => {
         this.setState({
           isLoading: false,
           trivia: result[0],
         });
-        Alert.alert('Error', 'Ha, something is wrong!')
       })
       .catch((error) =>{
         let random = Math.floor(Math.random() * 4)
@@ -36,7 +36,6 @@ export default class App extends Component {
           isLoading: false,
           trivia: List[random],
         });
-        Alert.alert('Error', `Ops, ${random} something is wrong!`)
       });
   }
 
@@ -57,13 +56,19 @@ export default class App extends Component {
           mapping={mapping}
           theme={lightTheme}>
           <Layout style={styles.container}>
-            <TouchableOpacity style={{ flex: 3, justifyContent: 'center' }} onPress={() => this.setState({ showQuestion: !showQuestion})}>
-              {showQuestion ? (
-                <Question question="blahx" />
-              ): (
-                <Answer answer={trivia.answer} />
-              )}
-            </TouchableOpacity>
+            <View>
+              <TouchableOpacity style={{ flex: 3, justifyContent: 'center' }} onPress={() => this.setState({ showQuestion: !showQuestion})}>
+                <Category category={trivia.category.title} style={{ alignSelf: 'auto'}}/>
+                {showQuestion ? (
+                  <Question question={trivia.question} />
+                ): (
+                  <Answer answer={trivia.answer} />
+                )}
+              </TouchableOpacity>
+              <Layout>
+                <Category category={`$ ${trivia.value}`} />
+              </Layout>
+            </View>
             <Button
               onPress={() => this.randomQuestion()}
               style={styles.button}

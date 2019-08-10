@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Text, StyleSheet  } from 'react-native';
 import { Layout } from 'react-native-ui-kitten';
-import { Label } from './Label'
+import Label from './Label'
 
 export default function Answer({answer}) {
   return (
@@ -9,7 +9,7 @@ export default function Answer({answer}) {
       <Label>
         Answer: 
       </Label>
-      <Text style={styles.question}>
+      <Text style={styles.answer}>
         {answer} 
       </Text>
     </Fragment>
