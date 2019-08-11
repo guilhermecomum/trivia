@@ -18,6 +18,6 @@ export default function Answer({answer}) {
 
 const styles = StyleSheet.create({
   answer: {
-    fontSize: 30
+    fontSize: 35
   }
 });

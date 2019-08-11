@@ -1,27 +1,26 @@
 import React, { Fragment, Component } from 'react';
 import { mapping, light as lightTheme } from '@eva-design/eva';
-import { ApplicationProvider, Layout, Button } from 'react-native-ui-kitten';
-import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { ApplicationProvider } from 'react-native-ui-kitten';
+import { HomeScreen } from './components/HomeScreen';
 import { List } from './questions.js';
 import Loading from './components/Loading';
-import Question from './components/Question';
-import Answer from './components/Answer';
-import Category from './components/Category';
 
 export default class App extends Component {
   constructor(props){
     super(props);
     this.state = {
       isLoading: false,
-      fontsAreLoaded: false,
       trivia: List[1],
-      showQuestion: true
     };
   }
 
+  //https://github.com/sottenad/jService
   randomQuestion = async () => {
-    this.setState({ isLoading: true, showQuestion: true, });
-    //await fetch('http://httpstat.us/500')
+    this.setState({
+      isLoading: true,
+      showQuestion: true
+    });
+
     await fetch('http://jservice.io/api/random')
       .then((response) => response.json())
       .then((result) => {
@@ -41,55 +40,19 @@ export default class App extends Component {
 
 
   render() {
-    const { trivia, showQuestion, isLoading } = this.state
-    if(isLoading) {
-      return (
-        <ApplicationProvider
-          mapping={mapping}
-          theme={lightTheme}>
+    const { trivia, isLoading } = this.state
+    return (
+      <ApplicationProvider
+        mapping={mapping}
+        theme={lightTheme}>
+        {isLoading ? (
           <Loading />
-        </ApplicationProvider>
-      )
-    } else {
-      return (
-        <ApplicationProvider
-          mapping={mapping}
-          theme={lightTheme}>
-          <Layout style={styles.container}>
-            <View>
-              <TouchableOpacity style={{ flex: 3, justifyContent: 'center' }} onPress={() => this.setState({ showQuestion: !showQuestion})}>
-                <Category category={trivia.category.title} style={{ alignSelf: 'auto'}}/>
-                {showQuestion ? (
-                  <Question question={trivia.question} />
-                ): (
-                  <Answer answer={trivia.answer} />
-                )}
-              </TouchableOpacity>
-              <Layout>
-                <Category category={`$ ${trivia.value}`} />
-              </Layout>
-            </View>
-            <Button
-              onPress={() => this.randomQuestion()}
-              style={styles.button}
-            >Next</Button>
-          </Layout>
-        </ApplicationProvider>
-      );
-    }
+        ): (
+          <HomeScreen
+            trivia={trivia}
+            randomQuestion={this.randomQuestion} a/>
+        )}
+      </ApplicationProvider>
+    )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 4,
-    backgroundColor: '#fff',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    padding: 20,
-    alignSelf: 'stretch'
-  },
-  button: {
-    alignSelf: 'stretch'
-  }  
-});

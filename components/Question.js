@@ -19,7 +19,7 @@ export default function Question({ question }) {
 
 const styles = StyleSheet.create({
   question: {
-    fontSize: 45
+    fontSize: 35
   }
 });
 
