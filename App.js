@@ -1,8 +1,8 @@
 import React, { Fragment, Component } from 'react';
 import { mapping, light as lightTheme } from '@eva-design/eva';
 import { ApplicationProvider } from 'react-native-ui-kitten';
-import { HomeScreen } from './components/HomeScreen';
 import { List } from './questions.js';
+import HomeScreen from './components/HomeScreen';
 import Loading from './components/Loading';
 
 export default class App extends Component {
@@ -14,11 +14,9 @@ export default class App extends Component {
     };
   }
 
-  //https://github.com/sottenad/jService
-  randomQuestion = async () => {
+  handleNewQuestion = async () => {
     this.setState({
       isLoading: true,
-      showQuestion: true
     });
 
     await fetch('http://jservice.io/api/random')
@@ -50,7 +48,7 @@ export default class App extends Component {
         ): (
           <HomeScreen
             trivia={trivia}
-            randomQuestion={this.randomQuestion} a/>
+            getQuestion={this.handleNewQuestion} />
         )}
       </ApplicationProvider>
     )

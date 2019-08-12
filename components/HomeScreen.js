@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Layout, Button } from 'react-native-ui-kitten';
-import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-import Question from './Question';
-import Answer from './Answer';
+import Trivia from './Trivia';
 import Category from './Category';
+import Value from './Value';
 
 export default class HomeScreen extends Component {
   constructor(props){
@@ -13,27 +13,30 @@ export default class HomeScreen extends Component {
       showQuestion: true
     };
   }
+
+  toggleAnswer = () => this.setState({ showQuestion: !this.state.showQuestion})
   
   render() {
     const { showQuestion } = this.state
-    const { trivia, randomQuestion } = this.props
+    const { trivia, getQuestion } = this.props
 
     return (
       <Layout style={styles.container}>
-        <View style={styles.textarea}>
-          <Category category={trivia.category.title} style={{ alignSelf: 'auto'}}/>
-          <TouchableOpacity style={{ flex: 1, border: '1px solid red'}}  onPress={() => this.setState({ showQuestion: !showQuestion})}>
+        <Layout  style={styles.trivia}>
+          <Category>{trivia.category.title}</Category>
+          <TouchableOpacity  onPress={() => this.toggleAnswer()}>
             {showQuestion ? (
-              <Question question={trivia.question} />
+              <Trivia label='Question' text={trivia.question} />
             ): (
-              <Answer answer={trivia.answer} />
+              <Trivia label='Answer' text={trivia.answer} />
             )}
           </TouchableOpacity>
-          <Category category={`$ ${trivia.value}`} />
-        </View>
+          <Value>{trivia.value}</Value>
+        </Layout>
         <Button
-          onPress={() => randomQuestion()}
+          onPress={() => getQuestion()}
           style={styles.button}
+          appearance='filled'
         >Next</Button>
       </Layout>
     );
@@ -42,19 +45,21 @@ export default class HomeScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 4,
-    backgroundColor: '#fff',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    padding: 20,
-    alignSelf: 'stretch'
-  },
-  textarea: {
     flex: 3,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  trivia: {
+    flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#ddd'
+    alignSelf: 'stretch',
+    paddingLeft: 20,
+    paddingRight: 20
   },
   button: {
-    alignSelf: 'stretch'
-  }  
+    height: 70,
+    alignSelf: 'stretch',
+    borderRadius: 0
+  }
 });
